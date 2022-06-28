@@ -25,9 +25,13 @@ app.get("/success", function(req, res){
   res.sendFile(__dirname + "/success.html");
 });
 
+app.get("/login", function(req, res){
+  res.sendFile(__dirname + "/login.html");
+});
+
 //Sending Data to Mongo DB
 app.post("/Registers", function (req, res) {
-  console.log(req.body)
+  //console.log(req.body)
     const registerEmployee = new Register({
       firstName : req.body.firstName,
       lastName : req.body.lastName,
@@ -35,6 +39,23 @@ app.post("/Registers", function (req, res) {
     }).save();
     res.status(201).redirect('/success');
 
+});
+
+app.post("/login", async (req, res) =>{
+  const email = req.body.email;
+  const firstName = req.body.firstName;
+
+  const useremail =await Register.findOne({email});
+
+  if(useremail.firstName === firstName) {
+    res.status(201).send("Welcome! You are logged in");
+  }else{
+    res.send("Invalid Details!");
+  }
+
+  //≡
+  res.send(useremail);
+  //console.log(email);
 });
 
 app.listen(3000, function(){
