@@ -45,18 +45,38 @@ app.post("/login", async (req, res) =>{
   const email = req.body.email;
   const firstName = req.body.firstName;
 
-  const useremail =await Register.findOne({email});
+  try{
+    const useremail =await Register.findOne({email});
 
-  if(useremail.firstName === firstName) {
-    res.status(201).send("Welcome! You are logged in");
-  }else{
-    res.send("Invalid Details!");
+    if(useremail.firstName === firstName) {
+      res.status(201).send("<h1>Welcome! You are logged in</h1>");
+    }else{
+
+      res.send("<h1>invalid login</h1>");
+      /*app.get("/login", function(req, res){
+        res.sendFile(__dirname + "/login.html");
+      });*/
+      //res.redirect("/login");
+      //alert("invailid");
+
+    }
+
+    //≡
+    //res.send(useremail);
+    //console.log(email);
+  } catch (error) {
+    res.status(400).send("invalid login");
   }
 
-  //≡
-  res.send(useremail);
-  //console.log(email);
 });
+
+/*let url = request.url;
+if (url==="login"){
+  fs.readFile(path.join(__dirname + "/login.html"), function (req, res)  {
+
+
+  });
+}*/
 
 app.listen(3000, function(){
   console.log("server is running on port 3000.");
